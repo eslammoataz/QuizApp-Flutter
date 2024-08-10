@@ -8,27 +8,74 @@ class QuestionsSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 400,
       child: SingleChildScrollView(
         child: Column(
           children: summaryData.map((data) {
-            return Row(
-              children: [
-                Text(((data["question_index"] as int) + 1).toString()),
-                Expanded(
+            var correctAnswer = data["correctAnswer"]?.toString() ?? "";
+            var chosenAnswer = data["chosenAnswer"]?.toString() ?? "";
+            var question = data["question"]?.toString() ?? "";
+            var questionIndex = (data["question_index"] as int?) ?? 0;
+
+            var circleColor =
+                (correctAnswer == chosenAnswer) ? Colors.green : Colors.red;
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Circle with question number
+                  Container(
+                    width: 35,
+                    height: 35,
+                    margin: const EdgeInsets.only(right: 16.0),
+                    decoration: BoxDecoration(
+                      color: circleColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        (questionIndex + 1).toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
                     child: Column(
-                  children: [
-                    Text(
-                      data["question"].toString(),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            question,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          'Correct Answer: $correctAnswer',
+                          style: const TextStyle(
+                            color: Colors.greenAccent,
+                          ),
+                        ),
+                        Text(
+                          'Your Answer: $chosenAnswer',
+                          style: TextStyle(
+                            color: correctAnswer == chosenAnswer
+                                ? Colors.greenAccent
+                                : Colors.redAccent,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(data["correctAnswer"].toString()),
-                    Text(data["chosenAnswer"].toString()),
-                  ],
-                ))
-              ],
+                  ),
+                ],
+              ),
             );
           }).toList(),
         ),

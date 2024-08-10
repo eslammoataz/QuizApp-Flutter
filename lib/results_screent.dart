@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app_flutter/data/questions.dart';
-import 'package:quiz_app_flutter/questions_screen.dart';
 import 'package:quiz_app_flutter/questions_summary.dart';
 
 class ResultsScreent extends StatelessWidget {
   final List<String> chosenAnswers;
-  const ResultsScreent({required this.chosenAnswers, super.key});
+
+  final Function() startScreen;
+  const ResultsScreent(
+      {required this.chosenAnswers, required this.startScreen, super.key});
 
   List<Map<String, Object>> getSummaryData() {
     final List<Map<String, Object>> summary = [];
@@ -36,7 +38,13 @@ class ResultsScreent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                "You answered the  $numOfCorrectAnswer out of $numOfTotalQuestions questions correctly"),
+              "You answered $numOfCorrectAnswer out of $numOfTotalQuestions questions correctly!",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+              ),
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 30),
             QuestionsSummary(
               summaryData: summaryData,
@@ -46,11 +54,23 @@ class ResultsScreent extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                // Restart the quiz
+                print("start quiz button pressed");
+                startScreen();
               },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
               child: const Text(
                 "Restart Quiz",
-                style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                style: TextStyle(
+                  fontSize: 15,
+                ),
               ),
             )
           ],

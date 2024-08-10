@@ -22,9 +22,17 @@ class _QuizState extends State<Quiz> {
       setState(() {
         activeScreen = ResultsScreent(
           chosenAnswers: selectedAnswers,
+          startScreen: restartQuiz,
         );
       });
     }
+  }
+
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers.clear();
+      activeScreen = StartScreen(switchScreen);
+    });
   }
 
   void switchScreen() {
